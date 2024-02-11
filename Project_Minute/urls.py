@@ -20,13 +20,15 @@ from Tickets import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.homepage,name='home-page'),
     path('parser/',views.parser),
     path('users/',views.userMasterView),
     path('users-bulk-data/',views.UserMasterBulkDataView),
-    path('',views.task),
-    path('view-tasks/',views.ManipulateTasks,name='view-tasks'),
-    # Add this line to your urlpatterns
+    path('assign-tasks/',views.AssignTasks,name='assign-tasks'),
+    path('view-tasks/',views.ViewTasks,name='view-tasks'),
     path('delete-tasks/<int:id>/', views.DeleteTask, name='delete-tasks'),
     path('update-task/<int:id>/', views.update, name='update-task'),
-
+    path('about/', views.aboutpage, name='about-page'),
+    path('adduser/', views.adduser, name='add-user'),
+    path('add-multiple-users/', views.addmultipleusers, name='add-multiple-users'),
 ]
