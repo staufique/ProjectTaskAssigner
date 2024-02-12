@@ -31,4 +31,6 @@ urlpatterns = [
     path('about/', views.aboutpage, name='about-page'),
     path('adduser/', views.adduser, name='add-user'),
     path('add-multiple-users/', views.addmultipleusers, name='add-multiple-users'),
+    path('add-state/', views.addState, name='add-state'),
+    path('add-multiple-states/', views.addMultipleState, name='add-multiple-states'),
 ]

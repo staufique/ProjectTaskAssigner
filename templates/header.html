@@ -25,6 +25,9 @@
                     <li class="nav-item {% if request.path == 'view-tasks' %}active{% endif %}">
                         <a class="nav-link" href="{% url 'view-tasks' %}">View Tasks</a>
                     </li>
+                    <li class="nav-item {% if request.path == 'add-state' %}active{% endif %}">
+                        <a class="nav-link" href="{% url 'add-state' %}">Add States</a>
+                    </li>
                     <li class="nav-item {% if request.path == 'view-tasks' %}active{% endif %}">
                         <a class="nav-link" href="{% url 'about-page' %}">About</a>
                     </li>

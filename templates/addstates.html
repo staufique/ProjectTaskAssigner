@@ -1,0 +1,47 @@
+{% include "header.html" %}
+
+    <div class="container mt-5">
+        <h1>Add States</h1>
+        {% if alert %}
+        <br>
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <strong>Successfully!</strong> State is inserted.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <br>
+        {% endif %}
+        {% if alert == False %}
+            <br>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Alert!</strong> The inserted state is already exists.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <br>
+        {% endif %}
+
+
+        <div class="container my-4">
+            <h2>Create State</h2>
+            <form method="POST" action="{% url 'add-state' %}">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label for="stateName" class="form-label">State Name</label>
+                    <input type="text" class="form-control" id="stateName" name="state_name" required>
+                </div>
+        
+                <div class="mb-3">
+                    <label for="stateCode" class="form-label">State Code</label>
+                    <input type="text" class="form-control" id="stateCode" name="state_code" required>
+                </div>
+        
+                <button type="submit" class="btn btn-primary">Add State</button>
+
+                <a href="{% url 'add-multiple-states' %}" class="btn btn-primary mx-4">Add MultipleStates</a>
+            </form>
+        </div>
+
+        </form>
+    </div>
+
+{% include "footer.html" %}

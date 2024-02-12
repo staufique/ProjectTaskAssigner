@@ -150,7 +150,7 @@ def aboutpage(request):
     return render(request,'about.html')
 
 def adduser(request):
-    states=State.objects.all()
+    states=State.objects.all().order_by('state_name')
     alert=True
     if request.method=="POST":
         name=request.POST.get('name')
@@ -175,34 +175,106 @@ def adduser(request):
         return render(request,'adduser.html',{'states':states,'added':added})
     return render(request,'adduser.html',{'states':states,'alert':alert})
 
+# def addmultipleusers(request):
+#     alert=True
+#     if request.method =="POST":
+#         file=request.FILES['excelFile']
+#         workbook = openpyxl.load_workbook(file)
+#         sheet = workbook.active
+#         a=0
+#         state = State.objects.all()
+#         state_length = len(state)
+#         user_data=[]
+#         added=False
+#         duplicate_users=0
+#         for row in sheet.iter_rows(min_row=2,values_only=True):
+#             name,email,password,phone,city,gender,joining_date=row
+#             check=UserMaster.objects.filter(name=name,email=email,password=password,phone=phone,city=city)
+#             if check:
+#                 duplicate_users+=1
+#                 continue
+#             data_updating=UserMaster(name=name,email=email,password=password,phone=phone,
+#             city=city, gender=gender, joining_date=joining_date, state=state[a])
+#             user_data += [data_updating]
+#             a+=1
+#             if a==(state_length):
+#                 a=0
+#         with transaction.atomic():
+#             UserMaster.objects.bulk_create(user_data)
+#             added = True
+#             if added and duplicate_users:
+#                 return render(request,'addmultipleusers.html',{'added':added,'duplicate_user':duplicate_users})
+#             return render(request,'addmultipleusers.html',{'added':added})
+#     return render(request,'addmultipleusers.html',{'alert':alert})
+
 def addmultipleusers(request):
     alert=True
     if request.method =="POST":
         file=request.FILES['excelFile']
         workbook = openpyxl.load_workbook(file)
         sheet = workbook.active
-        a=0
-        state = State.objects.all()
-        state_length = len(state)
         user_data=[]
         added=False
         duplicate_users=0
+        not_added=0
         for row in sheet.iter_rows(min_row=2,values_only=True):
-            name,email,password,phone,city,gender,joining_date=row
+            name,email,password,phone,city,gender,joining_date,state=row
             check=UserMaster.objects.filter(name=name,email=email,password=password,phone=phone,city=city)
             if check:
                 duplicate_users+=1
                 continue
-            data_updating=UserMaster(name=name,email=email,password=password,phone=phone,
-            city=city, gender=gender, joining_date=joining_date, state=state[a])
-            user_data += [data_updating]
-            a+=1
-            if a==(state_length):
-                a=0
+            check_states=State.objects.filter(state_name=state)
+            if check_states:
+                data_updating=UserMaster(name=name,email=email,password=password,phone=phone,
+                city=city, gender=gender, joining_date=joining_date, state=check_states[0])
+                user_data += [data_updating]
+            else:
+                not_added+=1
         with transaction.atomic():
             UserMaster.objects.bulk_create(user_data)
             added = True
             if added and duplicate_users:
-                return render(request,'addmultipleusers.html',{'added':added,'duplicate_user':duplicate_users})
+                return render(request,'addmultipleusers.html',{'added':added,'duplicate_user':duplicate_users,'not_added':not_added})
             return render(request,'addmultipleusers.html',{'added':added})
     return render(request,'addmultipleusers.html',{'alert':alert})
+
+
+def addState(request):
+    if request.method == "POST":
+        state_name = request.POST.get('state_name')
+        state_code = request.POST.get('state_code')
+        check_state = State.objects.filter(state_name=state_name, state_code=state_code)
+        if check_state:
+            alert = False
+            return render(request, 'addstates.html', {'alert': alert})
+        obj = State(state_name=state_name, state_code=state_code)
+        obj.save()
+        alert=True
+        return render(request, 'addstates.html', {'alert': alert})
+    return render(request, 'addstates.html')
+
+def addMultipleState(request):
+    alert=True
+    if request.method=="POST":
+        file=request.FILES['excelFile']
+        workbook = openpyxl.load_workbook(file)
+        sheet = workbook.active
+        added=False
+        duplicate_users=0
+        state_data=[]
+        for row in sheet.iter_rows(min_row=2,values_only=True):
+            print(row)
+            states,state_code=row
+            d_state=State.objects.filter(state_name=states).first()
+            if d_state:
+                duplicate_users+=1
+                continue
+            add_states=State(state_name=states,state_code=state_code)
+            state_data+=[add_states]
+        with transaction.atomic():
+            State.objects.bulk_create(state_data)
+            added = True
+            if added and duplicate_users:
+                return render(request,'addmultiplestates.html',{'added':added,'duplicate_user':duplicate_users})
+            return render(request,'addmultiplestates.html',{'added':added})
+    return render(request,'addmultiplestates.html',{'alert':alert})
