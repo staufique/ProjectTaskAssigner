@@ -17,13 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from Tickets import views
+# from Tickets.views import handler404
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.homepage,name='home-page'),
-    path('parser/',views.parser),
-    path('users/',views.userMasterView),
-    path('users-bulk-data/',views.UserMasterBulkDataView),
+    # path('<str:unwanted>/', views.handler404,name='home-page'),
+    # path('parser/',views.parser),
+    # path('users/',views.userMasterView),
+    # path('users-bulk-data/',views.UserMasterBulkDataView),
     path('assign-tasks/',views.AssignTasks,name='assign-tasks'),
     path('view-tasks/',views.ViewTasks,name='view-tasks'),
     path('delete-tasks/<int:id>/', views.DeleteTask, name='delete-tasks'),
@@ -33,4 +35,9 @@ urlpatterns = [
     path('add-multiple-users/', views.addmultipleusers, name='add-multiple-users'),
     path('add-state/', views.addState, name='add-state'),
     path('add-multiple-states/', views.addMultipleState, name='add-multiple-states'),
+
+    # page not found
+    # path('<str:first>/', views.handler404,name='not-found'),
 ]
+
+

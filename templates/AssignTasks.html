@@ -1,5 +1,29 @@
 {% include "header.html" %}
     <div class="container">
+        {% if alert %}
+        <br>
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <strong>Successfully!</strong> Tasks is assigned.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <br>
+        {% endif %}
+        {% if alert == False %}
+            <br>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Alert!</strong> Something went wrong.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <br>
+        {% endif %}
+        {% if date %}
+            <br>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Alert!</strong> the given task is already assigned to {{user}} on {{date}}.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <br>
+        {% endif %}
         <form class="my-4" action="" method="POST">
             {% csrf_token %}
             <div class="mb-3 row">
