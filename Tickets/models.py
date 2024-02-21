@@ -11,6 +11,12 @@ class State(models.Model):
 
     def __str__(self):
         return self.state_name
+
+    def save(self, *args, **kwargs):
+        # Update the updated_date field when the object is being updated
+        if self.pk is not None:  # If the object already exists (i.e., being updated)
+            self.updated_date = datetime.today()
+        super().save(*args, **kwargs)
     
 
 class UserMaster(models.Model):
@@ -28,6 +34,12 @@ class UserMaster(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def save(self, *args, **kwargs):
+        # Update the updated_date field when the object is being updated
+        if self.pk is not None:  # If the object already exists (i.e., being updated)
+            self.updated_date = datetime.today()
+        super().save(*args, **kwargs)
 
 
 class TaskMaster(models.Model):

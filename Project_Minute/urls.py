@@ -15,7 +15,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+# from Tickets.admin import admin_site
+from django.urls import path,include
 from Tickets import views
 # from Tickets.views import handler404
 
@@ -38,6 +39,9 @@ urlpatterns = [
 
     # page not found
     # path('<str:first>/', views.handler404,name='not-found'),
+
+
+    path('admin-panel/',views.adminPanel,name='admin-panel')
 ]
 
 
