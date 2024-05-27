@@ -62,14 +62,14 @@
                     <label for="joining_date" class="form-label">Joining Date</label>
                     <input type="date" class="form-control" id="joining_date" name="joining_date" required>
                 </div>
-                <div class="mb-3">
+                {% comment %} <div class="mb-3">
                     <label for="state" class="form-label">State</label>
                     <select class="form-select" id="state" name="state" required>
                         {% for state in states %}
                         <option value="{{ state.state_name }}">{{ state.state_name }}</option>
                         {% endfor %}
                     </select>
-                </div>
+                </div> {% endcomment %}
 
                 <button type="submit" class="btn btn-primary">Register</button>
             </form>
